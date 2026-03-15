@@ -2,7 +2,7 @@ import pytest
 import allure
 from data.data_page import MainPageData as MPD
 
-class TestAuthorization:
+class TestDrawingRoute:
 
     @allure.title('Отрисовка маршрута')
     @pytest.mark.parametrize(
