@@ -4,7 +4,8 @@ from data.data_page import MainPageData as MPD
 
 class TestDrawingRoute:
 
-    @allure.title('Отрисовка маршрута')
+    @allure.story('1. Отрисовка маршрута')
+    @allure.description('При вводе двух разных предустановленных адресов в поля "Откуда" и "Куда" на карте отображаются две точки начала и конца маршрута')
     @pytest.mark.parametrize(
         "from_address, where_address",
         [
