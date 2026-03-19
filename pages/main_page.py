@@ -3,6 +3,7 @@ from pages.base_page import BasePage
 from data.data_urls import MAIN_URL
 from locators import MainPageLocators as MPL
 from helpers import *
+from selenium.webdriver.support import expected_conditions as EC
 
 class MainPage(BasePage):
 
@@ -87,3 +88,39 @@ class MainPage(BasePage):
     @allure.step("Ожидаем видимость кнопки 'Забронировать'")
     def drive_reserve_button_visible(self):
         return self.wait_visible_return(MPL.DRIVE_RESERVE_BUTTON)
+
+    @allure.step("Клик по 'Вызвать такси'")
+    def click_call_taxi_button(self):
+        self.click(MPL.CALL_TAXI_BUTTON)
+
+    @allure.step("Отображение блока с выбором такси")
+    def taxi_selection_block_are_displayed(self):
+        return self.wait_visible_return(MPL.TAXI_SELECTION_BLOCK)
+
+    @allure.step("Получаем список всех тарифов на странице")
+    def get_all_tariff_titles(self):
+        elements = self.find_elements(MPL.TAXI_SELECTION_CARD)
+        return [el.text for el in elements]
+
+    @allure.step("Получаем активный тариф")
+    def get_active_tariff_title(self):
+        return self.find_elements(MPL.TAXI_SELECTION_CARD_ACTIVE)
+
+    @allure.step("Кликаем по тарифу такси")
+    def click_tariff_taxi(self, tariff_name):
+        self.click(taxi_tariff_card(tariff_name))
+
+    @allure.step("Наведение курсора на i в тарифах такси")
+    def pointing_cursor_at_i(self):
+        self.cursor(MPL.TARIFF_INFO)
+
+    @allure.step("Находим описание тарифа такси")
+    def description_taxi_tariff_text_return(self):
+        return self.find_element(MPL.TARIFF_DESCRIPTION).text
+
+    @allure.step("Отображение элементов в тарифе такси")
+    def field_visibility(self, field):
+        container = self.wait_visible_return(MPL.TARIFF_BLOCK_CONTAINER)
+        element = container.find_element(*element_tariff(field))
+        self.scroll_to_element(element)
+        return self.wait.until(EC.visibility_of(element))

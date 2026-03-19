@@ -1,5 +1,6 @@
 import allure
 from selenium.common import ElementClickInterceptedException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -48,10 +49,15 @@ class BasePage:
     def wait_visible(self, locator):
         self.wait.until(EC.visibility_of_element_located(locator))
 
-    @allure.step('Ожидаем видимость элемента и возвращаем текст')
-    def wait_element_text(self, locator):
-        self.wait_visible(locator)
-        return self.driver.find_element(*locator).text
+    @allure.step('Ищем элементы')
+    def find_elements(self, locator):
+        by, value = locator
+        return self.driver.find_elements(by, value)
+
+    @allure.step('Ищем элемент')
+    def find_element(self, locator):
+        by, value = locator
+        return self.driver.find_element(by, value)
 
     @allure.step("Ожидаем появление элементов")
     def wait_elements(self, locator):
@@ -62,3 +68,17 @@ class BasePage:
     @allure.step("Выполнение JavaScript")
     def execute_script(self, script, *args):
         return self.driver.execute_script(script, *args)
+
+    @allure.step("Наведение курсором на элемент")
+    def cursor(self, locator):
+        element = self.wait_visible_return(locator)
+        action = ActionChains(self.driver).move_to_element(element)
+        action.perform()
+
+    @allure.step("Скрипт на скролл")
+    def scroll_script(self, container, locator):
+        self.driver.execute_script("arguments[0].scrollTop = arguments[1].offsetTop - arguments[0].offsetTop;", container, locator)
+
+    @allure.step("Скролл к элементу")
+    def scroll_to_element(self, element):
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)

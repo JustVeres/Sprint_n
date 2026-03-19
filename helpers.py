@@ -11,3 +11,9 @@ def transport_icon_active(transport):
 
 def transport_text(transport_name):
     return By.XPATH, f"//div[contains(@class,'text') and contains(text(),'{transport_name}')]"
+
+def taxi_tariff_card(tariff_name):
+    return By.XPATH, f"//div[@class='tcard-title' and text()='{tariff_name}']"
+
+def element_tariff(element):
+    return By.XPATH, f".//div[text()='{element}'] | .//label[text()='{element}'] | //span[text()='{element}']"
