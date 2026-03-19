@@ -16,10 +16,6 @@ class BasePage:
     def open(self, url):
         self.driver.get(url)
 
-    @allure.step("Получаем текущий URL")
-    def get_current_url(self):
-        return self.driver.current_url
-
     @allure.step('Кликаем на элемент')
     def click(self, locator):
         try:
@@ -35,7 +31,7 @@ class BasePage:
         element.send_keys(text)
 
 
-    """Ожидание: видимость/исчезновение"""
+    """Ожидание: видимость/исчезновение/поиск"""
 
     @allure.step('Ожидаем URL')
     def wait_url(self, url):
@@ -45,9 +41,9 @@ class BasePage:
     def wait_visible_return(self, locator): #
         return self.wait.until(EC.visibility_of_element_located(locator))
 
-    @allure.step('Ожидание видимости элемента')
-    def wait_visible(self, locator):
-        self.wait.until(EC.visibility_of_element_located(locator))
+    @allure.step('Ожидаем исчезновение элемента')
+    def wait_invisible(self, locator, timeout=60):
+        return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
 
     @allure.step('Ищем элементы')
     def find_elements(self, locator):
@@ -58,10 +54,6 @@ class BasePage:
     def find_element(self, locator):
         by, value = locator
         return self.driver.find_element(by, value)
-
-    @allure.step("Ожидаем появление элементов")
-    def wait_elements(self, locator):
-        return self.wait.until(EC.presence_of_all_elements_located(locator))
 
     """Скрипты"""
 
@@ -74,10 +66,6 @@ class BasePage:
         element = self.wait_visible_return(locator)
         action = ActionChains(self.driver).move_to_element(element)
         action.perform()
-
-    @allure.step("Скрипт на скролл")
-    def scroll_script(self, container, locator):
-        self.driver.execute_script("arguments[0].scrollTop = arguments[1].offsetTop - arguments[0].offsetTop;", container, locator)
 
     @allure.step("Скролл к элементу")
     def scroll_to_element(self, element):

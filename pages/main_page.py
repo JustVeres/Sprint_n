@@ -1,4 +1,5 @@
 import allure
+import re
 from pages.base_page import BasePage
 from data.data_urls import MAIN_URL
 from locators import MainPageLocators as MPL
@@ -124,3 +125,103 @@ class MainPage(BasePage):
         element = container.find_element(*element_tariff(field))
         self.scroll_to_element(element)
         return self.wait.until(EC.visibility_of(element))
+
+    @allure.step("Клик по кнопке 'Требования к заказу'")
+    def click_requirements_order_button(self):
+        self.click(MPL.REQUIREMENTS_ORDER_BUTTON)
+
+    @allure.step("Клик по тогглу 'Столик для ноутбука'")
+    def click_laptop_table_switcher(self):
+        self.click(MPL.SLIDER_SWITCH_LAPTOP_TABLE)
+
+    @allure.step("Клик по кнопке 'Ввести номер и заказать'")
+    def click_order_taxi_button(self):
+        self.click(MPL.ORDER_TAXI_BUTTON)
+
+    @allure.step("Заголовок 'Поиск машины'")
+    def find_text_search_car_title(self):
+        return self.find_element(MPL.SEARCH_CAR_TITLE).text
+
+    @allure.step("Таймер обратного отсчета в правом верхнем углу'")
+    def find_text_search_car_time(self):
+        return self.find_element(MPL.SEARCH_CAR_TIME).text
+
+    @allure.step("Проверка видимости кнопки отмены заказа")
+    def check_close_button_visible(self):
+        element = self.wait_visible_return(MPL.ORDER_CANCEL_BUTTON)
+        return element.is_displayed()
+
+    @allure.step("Проверка видимости текста 'Отменить'")
+    def check_cancel_div_visible(self):
+        element = self.wait_visible_return(MPL.CANCEL_DIV)
+        return element.is_displayed()
+
+    @allure.step("Проверка видимости кнопки с деталями")
+    def check_detail_button_visible(self):
+        element = self.wait_visible_return(MPL.DETAIL_BUTTON)
+        return element.is_displayed()
+
+    @allure.step("Проверка видимости текста 'Детали'")
+    def check_detail_div_visible(self):
+        element = self.wait_visible_return(MPL.DETAIL_DIV)
+        return element.is_displayed()
+
+    @allure.step("Ожидаем исчезновения блока с поиском такси")
+    def wait_invisible_search_taxi(self):
+        self.wait_invisible(MPL.SEARCH_CAR_TIME)
+
+    @allure.step("Ищем текст в заголовке 'n мин. и приедет'")
+    def find_text_min_and_road(self):
+        return self.find_element(MPL.ORDER_HEADER_TITLE).text
+
+    @allure.step("Ожидаем видимость иконки >")
+    def chevron_icon_visible(self):
+        return self.wait_visible_return(MPL.CHEVRON_ICON)
+
+    @allure.step("Получить текст номера такси")
+    def get_order_number_text(self):
+        element = self.wait_visible_return(MPL.NUMBER_FIELD)
+        return element.text.strip()
+
+    @allure.step("Ожидаем видимость иконки авто")
+    def car_icon_visible(self):
+        return self.wait_visible_return(MPL.CAR_ICON)
+
+    @allure.step("Возвращаем Имя, Рейтинг и фото водителя такси")
+    def get_driver_info(self):
+        container = self.find_element(MPL.DRIVER_BLOCK)
+        rating = container.find_element(*MPL.DRIVER_RATING).text
+        photo = container.find_element(*MPL.DRIVER_PHOTO).get_attribute("src")
+        name = container.find_element(*MPL.DRIVER_NAME).text
+        return {
+            "name": name,
+            "rating": rating,
+            "photo": photo
+        }
+
+    @allure.step("Клик по кнопке Детали")
+    def click_detail_button(self):
+        self.click(MPL.DETAIL_BUTTON)
+
+    @allure.step("Возвращаем стоимость такси для тарифа Рабочий в карточке заказов")
+    def get_active_tariff_price(self):
+        element = self.find_element(MPL.ACTIVE_CARD_PRICE)
+        match = re.search(r"\d+", element.text)
+        price = int(match.group())
+        return price
+
+    @allure.step("Возвращаем стоимость такси в Деталях")
+    def get_order_cost_text(self):
+        element = self.find_element(MPL.PRICE_DETAIL)
+        match = re.search(r"\d+", element.text)
+        price = int(match.group())
+        return price
+
+    @allure.step("Клик по кнопке Отменить")
+    def click_cancel_button(self):
+        self.click(MPL.ORDER_CANCEL_BUTTON)
+
+    @allure.step("Ожидаем закрытие модалки заказа и оверлея")
+    def order_modal_and_overlay_close(self):
+        self.wait_invisible(MPL.ORDER_HEADER_TITLE, 3)
+        self.wait_invisible(MPL.OVERLAY, 3)

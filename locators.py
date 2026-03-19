@@ -26,3 +26,28 @@ class MainPageLocators:
     TARIFF_BLOCK_CONTAINER = (By.CSS_SELECTOR, "div.tariff-picker.shown")
     TELEPHONE_FIELD = (By.XPATH, "//div[text()='Телефон']")
     ORDER_TAXI_BUTTON = (By.XPATH, "//span[contains(@class,'smart-button-main')]")
+
+    REQUIREMENTS_ORDER_BUTTON = (By.XPATH, "//div[@class='reqs-head' and text()='Требования к заказу']")
+    SLIDER_SWITCH_LAPTOP_TABLE = (By.CSS_SELECTOR, "span.slider.round")
+
+    SEARCH_CAR_TITLE = (By.XPATH, "//div[contains(@class,'order-header-title')]")
+    SEARCH_CAR_TIME = (By.XPATH, "//div[contains(@class,'order-header-time')]")
+    ORDER_CANCEL_BUTTON = (By.XPATH, "//button[contains(@class,'order-button') and .//img[@alt='close']]")
+    CANCEL_DIV = (By.XPATH, "//div[text()='Отменить']")
+    DETAIL_BUTTON = (By.XPATH, "//button[contains(@class,'order-button') and .//img[@alt='burger']]")
+    DETAIL_DIV = (By.XPATH, "//div[text()='Детали']")
+
+    ORDER_HEADER_TITLE = (By.XPATH, "//div[contains(@class,'order-header-title')]")
+    CHEVRON_ICON = (By.CSS_SELECTOR, "img[src*='chewron']")
+    NUMBER_FIELD = (By.XPATH, "//div[contains(@class,'order-number')]")
+    CAR_ICON = (By.XPATH, "//img[@alt='Car' and contains(@src, *)]")
+
+    DRIVER_BLOCK = (By.XPATH, "//div[contains(@class,'order-btn-group')][1]")
+    DRIVER_RATING = (By.XPATH, ".//div[contains(@class,'order-btn-rating')]")
+    DRIVER_PHOTO = (By.XPATH, ".//img[@alt='close']")
+    DRIVER_NAME = (By.XPATH, ".//div[not(@class) and normalize-space(text())]")
+
+    ACTIVE_CARD_PRICE = (By.XPATH, "//div[contains(@class,'tcard active')]//div[contains(@class,'tcard-price')]")
+    PRICE_DETAIL = (By.XPATH, "//div[contains(@class,'o-d-sh') and contains(text(),'Стоимость')]")
+
+    OVERLAY = (By.CSS_SELECTOR, "div.overlay")

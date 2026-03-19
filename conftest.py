@@ -32,6 +32,15 @@ def input_all_address_fields(main_page):
 @allure.step("Предусловие для выбора маршрута Быстрый и нажатие на Вызвать такси") # маршрут Быстрый выбран по умолчанию
 def select_fast_route_and_click_call_taxi(main_page):
     main_page.click_call_taxi_button()
+    return main_page.get_active_tariff_price()
+
+@pytest.fixture
+@allure.step("Предусловие для заказа такси и ожидание финального экрана заказа")
+def order_taxi_final_screen_order(main_page):
+    main_page.click_requirements_order_button()
+    main_page.click_laptop_table_switcher()
+    main_page.click_order_taxi_button()
+    main_page.wait_invisible_search_taxi()
 
 """Фикстуры для страниц"""
 @pytest.fixture
